@@ -1,4 +1,4 @@
-package com.company.messenger.entity;
+package com.company.messenger.data.entity;
 
 import java.time.LocalDate;
 

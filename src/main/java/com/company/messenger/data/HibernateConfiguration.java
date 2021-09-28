@@ -1,4 +1,4 @@
-package com.company.messenger.config;
+package com.company.messenger.data;
 
 import java.util.Properties;
 
@@ -21,7 +21,7 @@ public class HibernateConfiguration {
     public LocalSessionFactoryBean sessionFactory() {
         LocalSessionFactoryBean sessionFactory = new LocalSessionFactoryBean();
         sessionFactory.setDataSource(dataSource());
-        sessionFactory.setPackagesToScan("com.company.messenger.entity");
+        sessionFactory.setPackagesToScan("com.company.messenger.data.entity");
         sessionFactory.setHibernateProperties(hibernateProperties());
 
         return sessionFactory;
@@ -47,8 +47,8 @@ public class HibernateConfiguration {
 
     private Properties hibernateProperties() {
         Properties hibernateProperties = new Properties();
-        hibernateProperties.setProperty(
-            "hibernate.dialect", "org.hibernate.dialect.MySQL8Dialect");
+        hibernateProperties.setProperty("hibernate.dialect", "org.hibernate.dialect.MySQL8Dialect");
+        hibernateProperties.setProperty("hibernate.hbm2ddl.auto", "update");
 
         return hibernateProperties;
     }

@@ -1,11 +1,17 @@
-package com.company.messenger;
+package com.company.messenger.data;
 
 import java.util.List;
 import java.util.function.Consumer;
 import java.util.function.Function;
 
+import javax.persistence.NoResultException;
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Root;
+
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
+import org.hibernate.query.Query;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -47,6 +53,25 @@ public class Repository {
         });
     }
 
+    public <T> T findByColumn(Class<T> entityClass, String columnName, String value) {
+        return doAction(session -> {
+            CriteriaBuilder builder = session.getCriteriaBuilder();
+            CriteriaQuery<T> criteriaQuery = builder.createQuery(entityClass);
+
+            Root<T> root = criteriaQuery.from(entityClass);
+            criteriaQuery.select(root).where(builder.like(root.get(columnName), value));
+
+            Query<T> query = session.createQuery(criteriaQuery);
+
+            try {
+                return query.getSingleResult();
+            }
+            catch (NoResultException e) {
+                return null;
+            }
+        });
+    }
+
     private <T> T doAction(Function<Session, T> function) {
         try (Session session = sessionFactory.openSession()) {
             return function.apply(session);
@@ -62,5 +87,6 @@ public class Repository {
     private <T> String getSelectQuery(Class<T> entityClass) {
         return String.format("SELECT a FROM %s a", entityClass.getSimpleName());
     }
+
 
 }
