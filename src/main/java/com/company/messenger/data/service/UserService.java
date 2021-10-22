@@ -1,36 +1,41 @@
 package com.company.messenger.data.service;
 
-import java.util.List;
-
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 
-import com.company.messenger.data.Repository;
 import com.company.messenger.data.entity.User;
+import com.company.messenger.data.repository.UserRepository;
 
-@Component
-public class UserService {
+@Service
+public class UserService implements UserDetailsService {
 
-    private final Repository repository;
+    private final UserRepository userRepository;
+
+    private final BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
 
     @Autowired
-    public UserService(Repository repository) {
-        this.repository = repository;
+    public UserService(UserRepository userRepository) {
+        this.userRepository = userRepository;
     }
 
-    public boolean register(User user) {
-        if (repository.findByColumn(User.class, "email", user.getEmail()) == null) {
-            user.setPassword(new BCryptPasswordEncoder().encode(user.getPassword()));
-            repository.save(user);
-            return true;
+    @Override
+    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+        User user = userRepository.findUserByUsername(username);
+
+        if (user == null) {
+            throw new UsernameNotFoundException("User not found");
         }
 
-        return false;
+        return user;
     }
 
-    public List<User> findAll() {
-        return repository.findAll(User.class);
+    public void save(User user) {
+        user.setPassword(passwordEncoder.encode(user.getPassword()));
+        userRepository.save(user);
     }
 
 }
