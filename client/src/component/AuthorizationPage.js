@@ -40,7 +40,6 @@ export class AuthorizationPage extends React.Component {
     }
 
     render() {
-        alert("render")
         if (this.state.authorized) {
             return <MainPage/>
         }

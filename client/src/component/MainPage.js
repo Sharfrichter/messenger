@@ -10,9 +10,8 @@ export class MainPage extends React.Component {
 
 
     render() {
-        let conversationsJSON = ConversationService.getConversations();
-        alert(conversationsJSON);
-        let conversations = JSON.parse(conversationsJSON);
+        let conversations = null;
+        alert(ConversationService.getConversations());
         let menuItems = []
         conversations.forEach(conversation => {
             menuItems.push(conversation.name);
