@@ -11,9 +11,15 @@ import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
 import javax.transaction.Transactional;
 
+import org.hibernate.Session;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Repository;
 
 import com.company.messenger.data.entity.Conversation;
+import com.company.messenger.data.entity.Message;
+import com.company.messenger.data.entity.User;
+import com.company.messenger.web.model.ConversationWebModel;
 
 @Repository
 public class ConversationRepository {
@@ -29,5 +35,6 @@ public class ConversationRepository {
     public Optional<Conversation> findById(Long id) {
         return Optional.of(entityManager.find(Conversation.class, id));
     }
+
 
 }

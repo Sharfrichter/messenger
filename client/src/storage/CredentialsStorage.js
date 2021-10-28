@@ -9,6 +9,10 @@ class CredentialsStorage {
     getCredentials() {
         return sessionStorage.getItem("credentials");
     }
+
+    getAuthorizationHeaderValue() {
+        return 'Basic ' + this.getCredentials();
+    }
 }
 
 export default new CredentialsStorage();

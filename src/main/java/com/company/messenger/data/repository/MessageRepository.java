@@ -10,6 +10,7 @@ import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
 import javax.transaction.Transactional;
 
+import org.hibernate.annotations.Target;
 import org.springframework.stereotype.Repository;
 
 import com.company.messenger.data.entity.Message;
@@ -40,6 +41,7 @@ public class MessageRepository {
         return entityManager.createQuery(query).getResultStream().collect(Collectors.toList());
     }
 
+    @Transactional
     public List<Message> findAll() {
         CriteriaBuilder builder = entityManager.getCriteriaBuilder();
 

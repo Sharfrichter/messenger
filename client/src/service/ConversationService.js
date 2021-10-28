@@ -4,19 +4,21 @@ class ConversationService {
 
     serverUrl = "http://localhost:8080/conversations";
 
-    async getConversations() {
-        let request = new XMLHttpRequest();
-        request.open("GET", this.serverUrl);
+    getConversations() {
+        var xhr = new XMLHttpRequest();
 
-        request.onreadystatechange = function () {
-            if (request.readyState === 4) {
-                console.log(xhr.status);
-                console.log(xhr.responseText);
-            }};
+        xhr.open('GET', this.serverUrl, false);
+        xhr.setRequestHeader("Authorization", CredentialsStorage.getAuthorizationHeaderValue());
 
-        request.send();
-        return request.responseText;
+        xhr.send();
 
+        if (xhr.status != 200) {
+            alert(xhr.status + ': ' + xhr.statusText); // пример вывода: 404: Not Found
+        } else {
+            return JSON.parse(xhr.responseText);
+        }
+
+        return [];
     }
 }
 

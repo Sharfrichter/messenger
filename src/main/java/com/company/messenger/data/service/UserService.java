@@ -1,6 +1,10 @@
 package com.company.messenger.data.service;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -9,6 +13,7 @@ import org.springframework.stereotype.Service;
 
 import com.company.messenger.data.entity.User;
 import com.company.messenger.data.repository.UserRepository;
+import com.company.messenger.web.model.ConversationWebModel;
 
 @Service
 public class UserService implements UserDetailsService {
@@ -24,7 +29,7 @@ public class UserService implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        User user = userRepository.findUserByUsername(username);
+        User user = userRepository.findByUsername(username);
 
         if (user == null) {
             throw new UsernameNotFoundException("User not found");
@@ -36,6 +41,10 @@ public class UserService implements UserDetailsService {
     public void save(User user) {
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         userRepository.save(user);
+    }
+
+    public List<User> findAll() {
+        return userRepository.findAll();
     }
 
 }

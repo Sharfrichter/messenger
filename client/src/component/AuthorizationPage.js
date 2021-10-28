@@ -26,11 +26,11 @@ export class AuthorizationPage extends React.Component {
             }
         });
 
-        if (response.ok) {
-            CredentialsStorage.setCredentials(username, password)
-            this.state.authorized = true;
-        } else {
+        if (!response.ok) {
             alert("Введенный пользователь или пароль неверны")
+        } else {
+            CredentialsStorage.setCredentials(username, password);
+            this.setState(state => ({authorized: true}));
         }
 
     }

@@ -8,25 +8,29 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.company.messenger.data.entity.Conversation;
 import com.company.messenger.data.entity.User;
 import com.company.messenger.data.repository.ConversationRepository;
+import com.company.messenger.web.model.ConversationWebModel;
+import com.company.messenger.web.model.converter.ConversationConverter;
 
 @RestController
 public class ConversationsController {
 
     private final ConversationRepository conversationRepository;
 
+    private final ConversationConverter conversationConverter;
+
     @Autowired
-    public ConversationsController(ConversationRepository conversationRepository) {
+    public ConversationsController(ConversationRepository conversationRepository, ConversationConverter conversationConverter) {
         this.conversationRepository = conversationRepository;
+        this.conversationConverter = conversationConverter;
     }
 
     @GetMapping("/conversations")
-    public List<Conversation> findAll() {
+    public List<ConversationWebModel> findAll() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         User user = (User) authentication.getPrincipal();
-        return null;
+        return conversationConverter.convert(user.getConversations());
     }
 
 }
