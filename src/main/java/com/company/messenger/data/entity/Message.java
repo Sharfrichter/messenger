@@ -36,11 +36,13 @@ public class Message {
     @Column(name = "date")
     private LocalDate date;
 
+    @JoinColumn(name = "user_id")
     @EqualsAndHashCode.Exclude
     @ToString.Exclude
     @ManyToOne
     private User user;
 
+    @JoinColumn(name = "conversation_id")
     @EqualsAndHashCode.Exclude
     @ToString.Exclude
     @ManyToOne

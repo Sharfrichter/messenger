@@ -5,20 +5,44 @@ class ConversationService {
     serverUrl = "http://localhost:8080/conversations";
 
     getConversations() {
-        var xhr = new XMLHttpRequest();
+        return this.getData(this.serverUrl);
+    }
 
-        xhr.open('GET', this.serverUrl, false);
-        xhr.setRequestHeader("Authorization", CredentialsStorage.getAuthorizationHeaderValue());
+    getMessages(conversationId) {
+        return this.getData(this.serverUrl + '/' + conversationId);
+    }
 
-        xhr.send();
+    saveMessage(conversationId, text) {
+        let request = new XMLHttpRequest();
+        request.open("POST", this.serverUrl+"/"+conversationId);
 
-        if (xhr.status != 200) {
-            alert(xhr.status + ': ' + xhr.statusText); // пример вывода: 404: Not Found
+        request.setRequestHeader("Authorization", CredentialsStorage.getAuthorizationHeaderValue());
+        request.setRequestHeader("Content-Type", "application/json");
+
+        request.onreadystatechange = function () {
+            if (request.readyState === 4) {
+                console.log(request.status);
+                console.log(request.responseText);
+            }};
+
+
+        request.send(text);
+        return this.getMessages(conversationId)
+    }
+
+    getData(url) {
+        let request = new XMLHttpRequest();
+
+        request.open('GET', url, false);
+        request.setRequestHeader("Authorization", CredentialsStorage.getAuthorizationHeaderValue());
+
+        request.send();
+
+        if (request.status !== 200) {
+            alert(request.status + ': ' + request.statusText);
         } else {
-            return JSON.parse(xhr.responseText);
+            return JSON.parse(request.responseText);
         }
-
-        return [];
     }
 }
 

@@ -36,5 +36,4 @@ public class ConversationRepository {
         return Optional.of(entityManager.find(Conversation.class, id));
     }
 
-
 }

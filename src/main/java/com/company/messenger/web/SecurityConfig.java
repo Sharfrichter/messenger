@@ -27,7 +27,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         http.cors().configurationSource(request -> new CorsConfiguration().applyPermitDefaultValues());
 
         http.csrf().disable()
-            .authorizeRequests().anyRequest().authenticated()
+            .authorizeRequests()
+            .antMatchers("/user/create").permitAll()
+            .antMatchers("/**").authenticated()
             .and().httpBasic()
             .and().sessionManagement().disable();
     }

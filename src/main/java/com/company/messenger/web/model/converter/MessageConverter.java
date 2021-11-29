@@ -1,5 +1,7 @@
 package com.company.messenger.web.model.converter;
 
+import java.util.Collection;
+import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -36,8 +38,8 @@ public class MessageConverter {
         return model;
     }
 
-    public List<MessageWebModel> convert(List<Message> messageList) {
-       return messageList.stream().map(this::convert).collect(Collectors.toList());
+    public List<MessageWebModel> convert(Collection<Message> messageList) {
+       return messageList.stream().map(this::convert).sorted(Comparator.comparing(MessageWebModel::getDate)).collect(Collectors.toList());
     }
 
     public Message convert(MessageWebModel model) {

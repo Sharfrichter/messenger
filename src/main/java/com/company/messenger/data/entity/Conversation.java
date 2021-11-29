@@ -38,11 +38,18 @@ public class Conversation {
 
     @EqualsAndHashCode.Exclude
     @ToString.Exclude
+
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(
         name = "conversation_users",
         joinColumns = {@JoinColumn(name = "conversation_id")},
         inverseJoinColumns = {@JoinColumn(name = "user_id")})
     private Set<User> users;
+
+    @EqualsAndHashCode.Exclude
+    @ToString.Exclude
+
+    @OneToMany(mappedBy = "conversation")
+    private Set<Message> messages;
 
 }

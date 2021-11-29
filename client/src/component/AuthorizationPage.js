@@ -4,7 +4,7 @@ import {Base64EncoderService} from '../service/Base64EncoderService'
 import CredentialsStorage from "../storage/CredentialsStorage";
 import {MainPage} from "./MainPage";
 
-let serverUrl = "http://localhost:8080/messages"
+let serverUrl = "http://localhost:8080/conversations"
 
 export class AuthorizationPage extends React.Component {
     constructor(props) {

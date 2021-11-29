@@ -11,4 +11,8 @@ public class UserWebModel {
 
     private String lastName;
 
+    private String password;
+
+    private String username;
+
 }
