@@ -14,3 +14,13 @@ create unique index user_login_uindex
 
 create unique index user_password_uindex
 	on user (password);
+
+create table FRIEND
+(
+    FIRST_PERSON_ID  BIGINT
+        constraint FIRST_USER_ID_FK
+            references USER,
+    SECOND_PERSON_ID BIGINT
+        constraint SECOND_USER_ID_FK
+            references USER
+);

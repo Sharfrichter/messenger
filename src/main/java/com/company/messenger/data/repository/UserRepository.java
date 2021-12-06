@@ -2,6 +2,7 @@ package com.company.messenger.data.repository;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -10,6 +11,8 @@ import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
 import javax.transaction.Transactional;
 
+import org.hibernate.Session;
+import org.hibernate.query.NativeQuery;
 import org.springframework.stereotype.Repository;
 
 import com.company.messenger.data.entity.User;
@@ -47,6 +50,27 @@ public class UserRepository {
         query.select(root);
 
         return entityManager.createQuery(query).getResultList();
+    }
+
+    public List<User> findFriends(String username) {
+        String sql =
+            "select *\n" +
+            "from USER\n" +
+            "where id in (select SECOND_PERSON_ID\n" +
+            "             from FRIEND\n" +
+            "             where FIRST_PERSON_ID = (select id\n" +
+            "                                      from USER\n" +
+            "                                      where USERNAME = ?));";
+
+        Session session = entityManager.unwrap(Session.class);
+        NativeQuery<User> query = session.createSQLQuery(sql).setParameter(1, username).addEntity(User.class);
+        return query.list();
+    }
+
+    @Transactional
+    public void addFriend(Long firstId, Long secondId) {
+        String sql = "insert into friend(FIRST_PERSON_ID, SECOND_PERSON_ID) values (?, ?)";
+        entityManager.createNativeQuery(sql).setParameter(1, firstId).setParameter(2, secondId).executeUpdate();
     }
 
 }

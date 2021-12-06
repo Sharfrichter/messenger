@@ -1,6 +1,7 @@
 import React from "react";
 import ConversationService from "../service/ConversationService";
 import {MainPage} from "./MainPage";
+import {ConversationsPage} from "./ConversationsPage";
 
 export class ConversationPage extends React.Component {
 
@@ -15,19 +16,14 @@ export class ConversationPage extends React.Component {
 
     sendMessage(id) {
         let text = document.getElementsByName('message')[0].value;
-        let message = ConversationService.saveMessage(id, text);
-        this.setState(state =>
-            ({
-                id: id,
-                page: null,
-                messages: message
-            }));
+        ConversationService.saveMessage(id, text);
+        setTimeout(() => {  this.setState(state => ({messages: ConversationService.getMessages(id)})); }, 100);
     }
 
 
     render() {
         if (this.state.page != null) {
-            return <MainPage/>;
+            return <ConversationsPage/>;
         }
         return (
             <div>

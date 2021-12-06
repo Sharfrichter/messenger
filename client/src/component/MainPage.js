@@ -1,6 +1,6 @@
 import React from "react";
-import ConversationService from "../service/ConversationService";
-import {ConversationPage} from "./ConversationPage";
+import {ConversationsPage} from "./ConversationsPage";
+import {FriendsPage} from "./FriendsPage";
 
 export class MainPage extends React.Component {
     serverUrl = "http://localhost:8080/conversations"
@@ -15,23 +15,18 @@ export class MainPage extends React.Component {
 
     }
 
-    openConversation(id) {
-        this.setState({page: id});
-    }
-
     render() {
-        let id = this.state.page;
         if (this.state.page != null) {
-            return (<ConversationPage id={id}/>)
+            return <this.state.page/>
         }
-        let conversations = ConversationService.getConversations();
-
         return (
-            conversations.map(conversation =>
+            <div>
                 <div>
-                    <button onClick={() => this.openConversation(conversation.id)}>{conversation.name}</button>
+                    <button onClick={() => this.setState(() => ({page: ConversationsPage}))}>Беседы</button>
                 </div>
-            )
-        );
+                <button onClick={() => this.setState(() => ({page: FriendsPage}))}>Друзья</button>
+            </div>
+
+    )
     }
 }

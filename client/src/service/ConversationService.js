@@ -18,16 +18,7 @@ class ConversationService {
 
         request.setRequestHeader("Authorization", CredentialsStorage.getAuthorizationHeaderValue());
         request.setRequestHeader("Content-Type", "application/json");
-
-        request.onreadystatechange = function () {
-            if (request.readyState === 4) {
-                console.log(request.status);
-                console.log(request.responseText);
-            }};
-
-
         request.send(text);
-        return this.getMessages(conversationId)
     }
 
     getData(url) {

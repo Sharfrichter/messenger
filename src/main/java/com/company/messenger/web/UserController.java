@@ -1,6 +1,11 @@
 package com.company.messenger.web;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
@@ -26,6 +31,16 @@ public class UserController {
     @PostMapping("/user/create")
     public void createUser(@RequestBody UserWebModel user) {
         userService.save(userConverter.convert(user));
+    }
+
+    @GetMapping("/user/{username}")
+    public List<UserWebModel> getFriends(@PathVariable(value = "username") String username) {
+        return userConverter.convert(userService.findFriends(username));
+    }
+
+    @GetMapping("/user/addFriend/{username}")
+    public void addFriend(@PathVariable(value = "username") String username) {
+        User user = userService.findByUsername(username);
     }
 
 }

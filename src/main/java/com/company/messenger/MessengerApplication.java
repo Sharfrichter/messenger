@@ -37,7 +37,7 @@ public class MessengerApplication {
     @Bean
     CommandLineRunner run() {
         return (strings) -> {
-            List<Message> messageList = messageRepository.findAll();
+            userService.findFriends("alex").forEach(System.out::println);
             /*User user = new User(
                 1l,
                 "alex",
