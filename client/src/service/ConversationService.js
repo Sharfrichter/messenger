@@ -12,6 +12,17 @@ class ConversationService {
         return this.getData(this.serverUrl + '/' + conversationId);
     }
 
+    async startConversation(username) {
+        let response = await fetch(this.serverUrl + "/start/" + username, {
+            headers: {
+                Authorization: CredentialsStorage.getAuthorizationHeaderValue()
+            }
+        });
+        let text = await response.text();
+
+        return text;
+    }
+
     saveMessage(conversationId, text) {
         let request = new XMLHttpRequest();
         request.open("POST", this.serverUrl+"/"+conversationId);
@@ -30,7 +41,7 @@ class ConversationService {
         request.send();
 
         if (request.status !== 200) {
-            alert(request.status + ': ' + request.statusText);
+
         } else {
             return JSON.parse(request.responseText);
         }

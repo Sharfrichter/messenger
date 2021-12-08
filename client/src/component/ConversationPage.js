@@ -14,10 +14,17 @@ export class ConversationPage extends React.Component {
         }
     }
 
+    componentDidMount() {
+        let id = this.state.id;
+        this.timerID = setInterval(() => this.setState(() => ({messages: ConversationService.getMessages(id)})), 1000);
+    }
+
     sendMessage(id) {
         let text = document.getElementsByName('message')[0].value;
         ConversationService.saveMessage(id, text);
-        setTimeout(() => {  this.setState(state => ({messages: ConversationService.getMessages(id)})); }, 100);
+        setTimeout(() => {
+            this.setState(state => ({messages: ConversationService.getMessages(id)}));
+        }, 100);
     }
 
 
@@ -26,19 +33,21 @@ export class ConversationPage extends React.Component {
             return <ConversationsPage/>;
         }
         return (
-            <div>
-                <div>
-                    <button onClick={() => this.setState(() => ({page: MainPage}))}>Назад</button>
-                </div>
-
+            <div className='loginpanel'>
                 {this.state.messages.map(message =>
                     <div>
-                        <span>{message.text}</span>
+                        <span>{message.date}</span><span>{message.text}</span><span>{message.user.username}</span>
                     </div>
                 )}
-
-                <input name='message' type='text'/>
-                <button onClick={() => this.sendMessage(this.state.id)}>Отправить</button>
+                <div>
+                    <input name='message' type='text'/>
+                    <input type="button" value="Отправить" onClick={() => this.sendMessage(this.state.id)}/>
+                </div>
+                <div className="buttons">
+                    <span>
+      <a href="javascript:void(0)" className="user-add register" onClick={() => this.setState(() => ({page: MainPage}))}>Назад</a>
+                    </span>
+                </div>
             </div>
         );
     }

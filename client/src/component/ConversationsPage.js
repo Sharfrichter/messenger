@@ -30,18 +30,19 @@ export class ConversationsPage extends React.Component {
         let conversations = ConversationService.getConversations();
 
         return (
-            <div>
-                <div>
-                    <button onClick={() => this.setState(() => ({page: MainPage}))}>Назад</button>
-                </div>
-
+            <div className='loginpanel'>
                 {conversations.map(conversation =>
                     <div>
-                        <button onClick={() => this.openConversation(conversation.id)}>{conversation.name}</button>
+                        <input type="button" value={conversation.name} onClick={() => this.openConversation(conversation.id)}/>
                     </div>
                 )}
-            </div>
+                <div className="buttons">
+                    <span>
+      <a href="javascript:void(0)" className="user-add register" onClick={() => this.setState(() => ({page: MainPage}))}>Назад</a>
+                    </span>
+                </div>
 
+            </div>
         );
     }
 }

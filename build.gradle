@@ -20,6 +20,7 @@ dependencies {
 
     implementation 'org.springframework.boot:spring-boot-starter-data-jpa:2.5.4'
     runtimeOnly 'com.h2database:h2:1.4.200'
+    implementation 'mysql:mysql-connector-java:8.0.26'
     implementation group: 'org.hsqldb', name: 'hsqldb', version: '2.5.2'
 
     compileOnly group: 'org.projectlombok', name: 'lombok', version: '1.18.20'

@@ -20,10 +20,13 @@ public class MessageConverter {
 
     private ConversationRepository conversationRepository;
 
+    private UserConverter userConverter;
+
     @Autowired
-    public MessageConverter(UserRepository userRepository, ConversationRepository conversationRepository) {
+    public MessageConverter(UserRepository userRepository, ConversationRepository conversationRepository, UserConverter userConverter) {
         this.userRepository = userRepository;
         this.conversationRepository = conversationRepository;
+        this.userConverter = userConverter;
     }
 
     public MessageWebModel convert(Message message) {
@@ -32,14 +35,14 @@ public class MessageConverter {
         model.setId(message.getId());
         model.setText(message.getText());
         model.setDate(message.getDate());
-        model.setUserId(message.getId());
+        model.setUser(userConverter.convert(message.getUser()));
         model.setConversationId(message.getConversation().getId());
 
         return model;
     }
 
     public List<MessageWebModel> convert(Collection<Message> messageList) {
-       return messageList.stream().map(this::convert).sorted(Comparator.comparing(MessageWebModel::getDate)).collect(Collectors.toList());
+        return messageList.stream().map(this::convert).sorted(Comparator.comparing(MessageWebModel::getDate)).collect(Collectors.toList());
     }
 
     public Message convert(MessageWebModel model) {
@@ -48,7 +51,7 @@ public class MessageConverter {
         message.setId(model.getId());
         message.setText(model.getText());
         message.setDate(model.getDate());
-        message.setUser(userRepository.findById(model.getUserId())
+        message.setUser(userRepository.findById(model.getUser().getId())
             .orElseThrow(() -> new IllegalArgumentException("wrong id of user")));
         message.setConversation(conversationRepository.findById(model.getConversationId())
             .orElseThrow(() -> new IllegalArgumentException("wrong id of conversation")));

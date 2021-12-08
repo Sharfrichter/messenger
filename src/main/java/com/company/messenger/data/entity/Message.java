@@ -1,6 +1,7 @@
 package com.company.messenger.data.entity;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -34,7 +35,7 @@ public class Message {
     private String text;
 
     @Column(name = "date")
-    private LocalDate date;
+    private LocalDateTime date;
 
     @JoinColumn(name = "user_id")
     @EqualsAndHashCode.Exclude

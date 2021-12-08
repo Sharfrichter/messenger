@@ -1,6 +1,7 @@
 package com.company.messenger.web.model;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 import lombok.Data;
 
@@ -11,9 +12,9 @@ public class MessageWebModel {
 
     private String text;
 
-    private LocalDate date;
+    private LocalDateTime date;
 
-    private Long userId;
+    private UserWebModel user;
 
     private Long conversationId;
 

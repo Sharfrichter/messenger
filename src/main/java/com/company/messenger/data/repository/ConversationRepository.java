@@ -28,8 +28,8 @@ public class ConversationRepository {
     private EntityManager entityManager;
 
    @Transactional
-    public void save(Conversation conversation) {
-        entityManager.merge(conversation);
+    public Conversation save(Conversation conversation) {
+        return entityManager.merge(conversation);
     }
 
     public Optional<Conversation> findById(Long id) {

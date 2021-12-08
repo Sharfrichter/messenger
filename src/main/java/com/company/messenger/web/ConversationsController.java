@@ -1,7 +1,9 @@
 package com.company.messenger.web;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
@@ -12,14 +14,17 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.company.messenger.data.entity.Conversation;
 import com.company.messenger.data.entity.Message;
 import com.company.messenger.data.entity.User;
 import com.company.messenger.data.repository.ConversationRepository;
 import com.company.messenger.data.repository.MessageRepository;
+import com.company.messenger.data.service.UserService;
 import com.company.messenger.web.model.ConversationWebModel;
 import com.company.messenger.web.model.MessageWebModel;
 import com.company.messenger.web.model.converter.ConversationConverter;
 import com.company.messenger.web.model.converter.MessageConverter;
+import com.company.messenger.web.model.converter.UserConverter;
 
 @RestController
 public class ConversationsController {
@@ -32,14 +37,20 @@ public class ConversationsController {
 
     private final MessageConverter messageConverter;
 
+    private final UserService userService;
+
+    private final UserConverter userConverter;
+
     @Autowired
     public ConversationsController(ConversationRepository conversationRepository, MessageRepository messageRepository,
-        ConversationConverter conversationConverter, MessageConverter messageConverter) {
+        ConversationConverter conversationConverter, MessageConverter messageConverter, UserService userService, UserConverter userConverter) {
 
         this.conversationRepository = conversationRepository;
         this.messageRepository = messageRepository;
         this.conversationConverter = conversationConverter;
         this.messageConverter = messageConverter;
+        this.userService = userService;
+        this.userConverter = userConverter;
     }
 
     //todo receive conversations from db not from user
@@ -48,6 +59,16 @@ public class ConversationsController {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         User user = (User) authentication.getPrincipal();
         return conversationConverter.convert(user.getConversations());
+    }
+
+    @GetMapping("/conversations/start/{username}")
+    public Long startConversation(@PathVariable(value = "username") String username) {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        User user = (User) authentication.getPrincipal();
+        Conversation conversation = new Conversation();
+        conversation.setUsers(Set.of(user, userService.findByUsername(username)));
+        conversation.setName(user.getUsername() + " and " + username);
+        return conversationRepository.save(conversation).getId();
     }
 
     @GetMapping("/conversations/{id}")
@@ -63,9 +84,9 @@ public class ConversationsController {
         MessageWebModel message = new MessageWebModel();
 
         message.setConversationId(conversationId);
-        message.setUserId(user.getId());
+        message.setUser(userConverter.convert(user));
         message.setText(text);
-        message.setDate(LocalDate.now());
+        message.setDate(LocalDateTime.now());
 
         messageRepository.save(messageConverter.convert(message));
     }

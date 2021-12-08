@@ -20,13 +20,12 @@ export class MainPage extends React.Component {
             return <this.state.page/>
         }
         return (
-            <div>
+            <div className='register'>
                 <div>
-                    <button onClick={() => this.setState(() => ({page: ConversationsPage}))}>Беседы</button>
+                    <input type="button" value="Беседы" onClick={() => this.setState(() => ({page: ConversationsPage}))}/>
+                    <input type="button" value="Друзья" onClick={() => this.setState(() => ({page: FriendsPage}))}/>
                 </div>
-                <button onClick={() => this.setState(() => ({page: FriendsPage}))}>Друзья</button>
             </div>
-
-    )
+        )
     }
 }

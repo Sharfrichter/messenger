@@ -55,5 +55,8 @@ public class UserService implements UserDetailsService {
         return userRepository.findByUsername(username);
     }
 
+    public void addFriend(Long firstId, Long secondId) {
+        userRepository.addFriend(firstId, secondId);
+    }
 
 }
