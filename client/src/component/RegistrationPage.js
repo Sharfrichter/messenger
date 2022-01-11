@@ -57,7 +57,7 @@ export class RegistrationPage extends React.Component {
                     <input id="repeatPassword" name="repeatPassword" type="password" placeholder="Повторите пароль"/>
                 </div>
                 <div className="buttons">
-                    <input type="button" value="Войти" onClick={this.register}/>
+                    <input type="button" value="Зарегистрироваться" onClick={this.register}/>
                     <span>
       <a href="javascript:void(0)" className="user-add register" onClick={() => this.setState(() => ({registered:true}))}>Назад</a>
                     </span>

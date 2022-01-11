@@ -260,5 +260,34 @@ input[type="button"] :active {
     flex-wrap: nowrap;
     flex-direction: row;
     justify-content: center;
-    align-items: center;
+    align-items: baseline;
+}
+
+span[type="username"] {
+    width: 100%;
+    font-family: 'Ubuntu', sans-serif;
+    font-size: 1.2em;
+    color: #262626;
+}
+
+div.messagepanel {
+    width: 100%;
+    max-width: 1000px;
+
+    padding: 20px;
+    margin: 0 auto;
+
+    position: relative;
+    /*top: 50%;*/
+
+
+    background-color: #DDD;
+
+    -webkit-border-radius: 4px;
+    -moz-border-radius: 4px;
+    border-radius: 4px;
+
+    -webkit-box-shadow: 0 0 5px 1px #333;
+    -moz-box-shadow: 0 0 5px 1px #333;
+    box-shadow: 0 0 5px 1px #333;
 }

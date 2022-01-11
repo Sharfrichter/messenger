@@ -33,10 +33,14 @@ export class ConversationPage extends React.Component {
             return <ConversationsPage/>;
         }
         return (
-            <div className='loginpanel'>
+            <div className='messagepanel'>
                 {this.state.messages.map(message =>
-                    <div>
-                        <span>{message.date}</span><span>{message.text}</span><span>{message.user.username}</span>
+                    <div className='messagepanel'>
+                    <div className="inline">
+                        <span type="username"><b>{message.date}</b></span>
+                        <span type="username" align="right"><b>{message.user.username}</b></span>
+                    </div>
+                    <span type="username">{message.text}</span>
                     </div>
                 )}
                 <div>
